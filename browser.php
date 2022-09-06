@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Naršyklė</title>
     <style>
         .container {
@@ -44,36 +45,37 @@ isset() → patiktinti ar kintamieji turi reikšmę (isset($_GET[‘x’])). -->
 
     <?php
 
-    $path = '';
+    $path = 'C:\*';
 
-    if (isset($_POST['name'])) {
-        $path = $_REQUEST['name'];
+    if (isset($_GET['target'])) {
+        $path = $_GET['target'] . '\*';
+        $paths = explode('\\', $path);
+        $path_length = count($paths);
+        if ($path_length>1){
+            unset($paths[$path_length-1], $paths[$path_length-2]);
+            $back_target = implode('\\', $paths);
+        }
     }
 
+     
+    $directory = glob($path);
 
-    echo $path;
-
-    $directory = scandir('./');
-
-    // print_r($directory);
-
-
-    echo "<form action = '' method='POST' class = 'list'>
-    <div class = 'itemh'><div class='column'>Type</div><div class='column'>Name</div><div class='column'>Size</div></div>";
+    if (isset($_GET['target'])) {
+        echo '<a href="?target='. $back_target .'"><i class="large material-icons" style="padding:7px; margin:7px; background-color: yellow; border-radius:50%">arrow_back</i></a>';
+        // echo '<button onclick="history.back()">Back</button>';
+    }
+        // echo "<i class='large material-icons' style = 'padding:7px; margin:7px; background-color: yellow; border-radius:50%'>arrow_forward</i>";
+        echo "<div class = 'itemh'><div class='column'>Type</div><div class='column'>Name</div><div class='column'>Size</div></div>";
 
     foreach($directory as $name) {
         if (is_file($name)){
-
         echo "<div class = 'item'><div class='column'><b>File </b></div>" . "<div class='column'>" . basename($name) . "</div><div class='column'> " . filesize($name) . " mb. </div></div></br>";
         }
         else if (is_link($name)) "<div class = 'item'><b>Link </b>" . basename($name) . "</div>";
         else {
-
-        echo "<div class = 'item'><div class='column'><b>Directory </b></div> <div class='column'><a href = $name>" . basename($name) . "</a><button name = 'name' type='submit'>Atidaryti</button></div> <div class='column'>" . filesize($name) . " mb. </div></div></br>";
+        echo '<div class ="item"><div class="column"><b>Directory </b></div> <div class="column"><a href="?target='. $name . '">'.basename($name).'</a></div> <div class="column">' . filesize($name) . ' mb. </div></div></br>';
         }
     }
-
-    echo "</form>"
 
     ?>
 </body>
