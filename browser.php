@@ -156,6 +156,11 @@
         }
     }
 
+    function converttoMB($bytes) {
+        $mb = $bytes * 0.00000095367432;
+        $mb = round($mb, 2);
+        return $mb;
+    }
 
     echo "<div style='text-align:right'>You are logged in as <b>" . $_SESSION['username'] . "</b> <form action='' method='POST'><button name='logout'>Logout</button></form></div>
     
@@ -164,7 +169,7 @@
             <div style='display:inline-flex'>";
 
     if (isset($_GET['target'])) {
-        echo   '<div id="backbutton"><a href="?target='. $back_target .' " ><i class="large material-icons" style="padding:7px; margin:7px; background-color: yellow; border-radius:50%">arrow_back</i></a></div>';
+    echo       '<div id="backbutton"><a href="?target='. $back_target .' " ><i class="large material-icons" style="padding:7px; margin:7px; background-color: yellow; border-radius:50%">arrow_back</i></a></div>';
     }
 
     echo        "<div id='newdirnotif' style='display:none; position:absolute; background-color: rgb(249, 250, 164); padding: 2px; top:30px'>Create new directory</div>
@@ -172,23 +177,24 @@
                 <div id='uploadfilenotif' style='display:none; position:absolute; background-color: rgb(249, 250, 164); padding: 2px; top:30px; left:400px'>Upload file</div>
                 <form action='' method='POST' enctype='multipart/form-data'><button style='background-color:inherit; border:none' type='submit' for='upload'><i id='uploadfile' class='large material-icons' style='padding:7px; margin:7px; background-color: green; border-radius:50%'>file_upload</i></button><input style='background-color:inherit; border:none' name='upload' type='file' placeholder='Upload file'></input></form>
             </div>
-    <div>
-        <div class = 'itemh'><div class='column'>Type</div><div class='column'>Name</div><div class='column'>Size</div><div class='column'>Action</div></div>
-            <div class='list'>";
+        <div>
+            <div class = 'itemh'><div class='column'>Type</div><div class='column'>Name</div><div class='column'>Size</div><div class='column'>Action</div>
+        </div>
+        <div class='list'>";
 
     foreach($directory as $key => $name) {
         if (is_file($name)){
         echo "<div class = 'item'>
                 <div class='column'><b>File </b></div>" . "
                 <div class='column'>" . basename($name) . "</div>
-                <div class='column'> " . filesize($name) . " bytes. </div>
+                <div class='column'> " . converttoMB(filesize($name)) . " mb. </div>
                 <div class='column'>
                     <button id='$key' class='actionsbutton' onclick='displayactions()'><div>Choose action</div></button>
                     <div class='$key' style = 'display:none'>
                         <form action = '' method='POST'><input type='hidden' name='oldname' value='$name' /><input type='hidden' name='deletion' value=".str_replace(' ', '_', $name)." /><button type='submit' name='delete'>Delete</button></form>
                         <form action = '' method='POST' enctype='multipart/form-data'><input type='hidden' name='download' value='$name' /><button type='submit' for='download'>Download</button></form>
                     </div>
-                </div>
+                    </div>
             </div></br>";
         }
         else if (is_link($name)) "<div class = 'item'><b>Link </b>" . basename($name) . "</div>";
@@ -196,7 +202,7 @@
         echo "<div class ='item'>     
                 <div class='column'><b>Directory </b></div> 
                 <div class='column'><a href='?target=$name'>".basename($name)."</a></div> 
-                <div class='column'>" . filesize($name) . " bytes. </div>
+                <div class='column'>" . converttoMB(filesize($name)) . " mb. </div>
                 <div class='column'>
                     <button id='$key' class='actionsbutton' onclick='displayactions()'><div>Choose action</div></button>
                     <div class = '$key' style = 'display:none' >
@@ -212,30 +218,30 @@
     </div>";
 
     echo "<script>
-    document.getElementById('newdirectory').addEventListener('mouseenter', () => {
-        document.getElementById('newdirnotif').style.display = 'block';
-    })
-    document.getElementById('newdirectory').addEventListener('mouseleave', () => {
-        document.getElementById('newdirnotif').style.display = 'none';
-    })
+            document.getElementById('newdirectory').addEventListener('mouseenter', () => {
+                document.getElementById('newdirnotif').style.display = 'block';
+            })
+            document.getElementById('newdirectory').addEventListener('mouseleave', () => {
+                document.getElementById('newdirnotif').style.display = 'none';
+            })
 
-    document.getElementById('uploadfile').addEventListener('mouseenter', () => {
-        document.getElementById('uploadfilenotif').style.display = 'block';
-    })
-    document.getElementById('uploadfile').addEventListener('mouseleave', () => {
-        document.getElementById('uploadfilenotif').style.display = 'none';
-    })
+            document.getElementById('uploadfile').addEventListener('mouseenter', () => {
+                document.getElementById('uploadfilenotif').style.display = 'block';
+            })
+            document.getElementById('uploadfile').addEventListener('mouseleave', () => {
+                document.getElementById('uploadfilenotif').style.display = 'none';
+            })
 
-    function displayactions(){
-        console.log(event.target.parentNode)
-        if (event.target.parentNode.nextElementSibling.style.display === 'block') {
-            event.target.parentNode.nextElementSibling.style.display = 'none';
-                } else {
-                    event.target.parentNode.nextElementSibling.style.display = 'block';
+            function displayactions(){
+                console.log(event.target.parentNode)
+                if (event.target.parentNode.nextElementSibling.style.display === 'block') {
+                    event.target.parentNode.nextElementSibling.style.display = 'none';
+                        } else {
+                            event.target.parentNode.nextElementSibling.style.display = 'block';
+                        }
+
                 }
-
-        }
-    </script>";
+        </script>";
 
     ?>
 </body>
