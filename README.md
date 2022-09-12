@@ -1,3 +1,5 @@
+<h2>Description</h2>
+
 A simple application for browsing windows directories and performing different actions with files and folders
 
 <h2>Instructions for launch</h2>
