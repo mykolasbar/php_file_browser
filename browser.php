@@ -51,6 +51,28 @@
         #actions {
             display:none;
         }
+        #newdirnotif {
+            display:none; 
+            position:absolute; 
+            background-color: rgb(249, 250, 164); 
+            padding: 2px; top:30px
+        }
+        #newdirectory {
+            padding:7px; 
+            margin:7px; 
+            background-color: red; 
+            border-radius:50%
+        }
+        #uploadfile {
+            padding:7px; 
+            margin:7px; 
+            background-color: green; 
+            border-radius:50%
+        }
+        input[name=upload] {
+            background-color:inherit; 
+            border:none
+        }
     </style>
 </head>
 <body>
@@ -172,10 +194,10 @@
     echo       '<div id="backbutton"><a href="?target='. $back_target .' " ><i class="large material-icons" style="padding:7px; margin:7px; background-color: yellow; border-radius:50%">arrow_back</i></a></div>';
     }
 
-    echo        "<div id='newdirnotif' style='display:none; position:absolute; background-color: rgb(249, 250, 164); padding: 2px; top:30px'>Create new directory</div>
-                <form action='' method='POST'><button type='submit' for='newdir' style = 'background-color:inherit; border:none'><i id='newdirectory' class='large material-icons' style='padding:7px; margin:7px; background-color: red; border-radius:50%'>create_new_folder</i></button><input type='text' name='newdir' placeholder='New directory name'></form>
+    echo        "<div id='newdirnotif'>Create new directory</div>
+                <form action='' method='POST'><button type='submit' for='newdir' style = 'background-color:inherit; border:none'><i id='newdirectory' class='large material-icons'>create_new_folder</i></button><input type='text' name='newdir' placeholder='New directory name'></form>
                 <div id='uploadfilenotif' style='display:none; position:absolute; background-color: rgb(249, 250, 164); padding: 2px; top:30px; left:400px'>Upload file</div>
-                <form action='' method='POST' enctype='multipart/form-data'><button style='background-color:inherit; border:none' type='submit' for='upload'><i id='uploadfile' class='large material-icons' style='padding:7px; margin:7px; background-color: green; border-radius:50%'>file_upload</i></button><input style='background-color:inherit; border:none' name='upload' type='file' placeholder='Upload file'></input></form>
+                <form action='' method='POST' enctype='multipart/form-data'><button style='background-color:inherit; border:none' type='submit' for='upload'><i id='uploadfile' class='large material-icons'>file_upload</i></button><input name='upload' type='file' placeholder='Upload file'></input></form>
             </div>
         <div>
             <div class = 'itemh'><div class='column'>Type</div><div class='column'>Name</div><div class='column'>Size</div><div class='column'>Action</div>
