@@ -53,9 +53,23 @@
         }
         #newdirnotif {
             display:none; 
+            position:absolute;
+            top:25px;
+            left:140px;
+            background-color: rgb(255, 254, 247); 
+            padding: 4px; 
+            border:1px solid;
+            font-size: 13px;
+        }
+        #uploadfilenotif {
+            display:none; 
             position:absolute; 
-            background-color: rgb(249, 250, 164); 
-            padding: 2px; top:30px
+            background-color: rgb(255, 254, 247); 
+            padding: 4px; 
+            border:1px solid;
+            font-size: 13px;
+            top:25px;
+            left:400px
         }
         #newdirectory {
             padding:7px; 
@@ -76,10 +90,6 @@
     </style>
 </head>
 <body>
-
-<!-- 'C:\*' -->
-<!-- './' -->
-<!-- $_SERVER["DOCUMENT_ROOT"] . '\*' -->
 
     <?php
 
@@ -102,30 +112,33 @@
 
     $directory = glob($path);
 
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-        if (isset($_GET['target'])) {
-            $newdirname = $_REQUEST['newdir'];
-            if (isset($_POST['newdir']) && !file_exists($_REQUEST['target'] . '\\' . $newdirname)) {      
-                mkdir($_REQUEST['target'] . '\\' . $newdirname);
-                header("Refresh:0");
-            }
-            else if (file_exists($_REQUEST['target'] . '\\' . $newdirname))
-            echo 'Please choose a different name for your directory.';
-        }
-    }
-
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-        if (isset($_POST['target'])) {
+    if($_SERVER["REQUEST_METHOD"] === "POST"){
+        if (isset($_POST['originalname'])) {
             if(isset($_POST['rename'])) {      
-                $currentname = $_REQUEST['target'];
-                $newname = $_REQUEST['target'] . '/../' . $_REQUEST['rename'];
+                $currentname = $_REQUEST['originalname'];
+                $newname = $_REQUEST['originalname'] . '/../' . $_REQUEST['rename'];
                 rename ($currentname, $newname);
                 header("Refresh:0");
             }
         }
     }
 
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if($_SERVER["REQUEST_METHOD"] === "POST"){
+        if (isset($_GET['target']) && isset($_REQUEST['newdir'])) {
+            $newdirname = $_REQUEST['newdir'];
+            if (isset($_POST['newdir'])) { 
+                if (!file_exists($_REQUEST['target'] . '\\' . $newdirname)) {      
+                    mkdir($_REQUEST['target'] . '\\' . $newdirname);
+                    header("Refresh:0");
+                }
+                else if (file_exists($_REQUEST['target'] . '\\' . $newdirname))
+                echo 'Please choose a different name for your directory.';
+            }
+            else echo 'Please add a name for your directory';
+        }
+    }
+
+    if($_SERVER["REQUEST_METHOD"] === "POST"){
         if(isset($_FILES['upload'])){
             $temp_name = $_FILES['upload']['tmp_name'];
             $file_name = $_FILES['upload']['name'];
@@ -140,7 +153,7 @@
        }
     }
 
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if($_SERVER["REQUEST_METHOD"] === "POST"){
         if (isset($_POST['deletion'])) {
             if (isset($_POST['oldname'])){
                 if(isset($_POST['delete'])) {
@@ -153,7 +166,7 @@
         }
     }
 
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if($_SERVER["REQUEST_METHOD"] === "POST"){
         if (isset($_POST['download'])) {
             ob_clean();
             ob_start();
@@ -170,7 +183,7 @@
         }
     }
 
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if($_SERVER["REQUEST_METHOD"] === "POST"){
         if (isset($_POST['logout'])) {
             $_SESSION['logged_in'] = false;
             session_destroy();
@@ -196,7 +209,7 @@
 
     echo        "<div id='newdirnotif'>Create new directory</div>
                 <form action='' method='POST'><button type='submit' for='newdir' style = 'background-color:inherit; border:none'><i id='newdirectory' class='large material-icons'>create_new_folder</i></button><input type='text' name='newdir' placeholder='New directory name'></form>
-                <div id='uploadfilenotif' style='display:none; position:absolute; background-color: rgb(249, 250, 164); padding: 2px; top:30px; left:400px'>Upload file</div>
+                <div id='uploadfilenotif'>Upload file</div>
                 <form action='' method='POST' enctype='multipart/form-data'><button style='background-color:inherit; border:none' type='submit' for='upload'><i id='uploadfile' class='large material-icons'>file_upload</i></button><input name='upload' type='file' placeholder='Upload file'></input></form>
             </div>
         <div>
@@ -228,7 +241,7 @@
                 <div class='column'>
                     <button id='$key' class='actionsbutton' onclick='displayactions()'><div>Choose action</div></button>
                     <div class = '$key' style = 'display:none' >
-                        <form action = '' method='POST'><input type='hidden' name='target' value='$name' /><button type='submit' for='rename'>Rename</button><input type='text' name='rename'></form>
+                        <form action = '' method='POST'><input type='hidden' name='originalname' value='$name' /><button type='submit' for='rename'>Rename</button><input type='text' name='rename'></form>
                     </div>
                 </div>
             </div></br>";

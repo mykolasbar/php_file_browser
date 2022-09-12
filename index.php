@@ -73,7 +73,7 @@
         <label for="username" class="label">Enter username</label>
         <input class="inputfield" type="text" name="username" required></input><br>
         <label for="username" class="label">Enter password</label>
-        <input class="inputfield" type="text" name="password" required></input>
+        <input class="inputfield" type="text" name="password" placeholder="password" required></input>
         <div id="enternotif">Confirm and enter</div>  <br>
         <div class="alignbutton"><button id="confirm" onmouseover="displaynotif()" onmouseleave="hidenotif()" style="position:relative">Confirm</button></div>
     </form>
