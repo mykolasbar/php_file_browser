@@ -104,10 +104,11 @@
         $path = $_GET['target'] . '\*';
         $paths = explode('\\', $path);
         $path_length = count($paths);
-        if ($path_length>1){
+        if ($path_length>2){
             unset($paths[$path_length-1], $paths[$path_length-2]);
             $back_target = implode('\\', $paths);
         }
+        else $back_target = 'C:';
     }
 
     $directory = glob($path);
@@ -144,18 +145,19 @@
             $file_name = $_FILES['upload']['name'];
             $file_name = str_replace(' ', '%20', $file_name);
             $file_size = $_FILES['upload']['size'];
-            header("Refresh:0");
             if($file_size < 500000) {
                 move_uploaded_file($temp_name, $_GET['target'] . '\\' . $file_name);
+                header("Refresh:0");
             }else{
-             print("File too big");
+            print("File too big");
+            header("Refresh:2");
           }
        }
     }
 
     if($_SERVER["REQUEST_METHOD"] === "POST"){
         if (isset($_POST['deletion'])) {
-            if (isset($_POST['oldname'])){
+            if (isset($_POST['oldname'])) {
                 if(isset($_POST['delete'])) {
                     $oldname = $_REQUEST['oldname'];
                     $renamed = $_REQUEST['deletion'];

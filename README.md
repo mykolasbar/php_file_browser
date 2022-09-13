@@ -4,7 +4,9 @@ A simple application for browsing windows directories and performing different a
 
 <h2>Instructions for launch</h2>
 
-Launch your apache server, download the github directory, put it in your xampp htdocs folder and open either the index.php or browser.php file via browser's localhost. Enter your chosen user name and the password <i>password</i> in the login form. The app should load your C:\ drive directory, which you should be able to browse.
+Launch your apache server, download the github directory, put it in your xampp htdocs folder and open either the index.php or browser.php file via browser's localhost. Enter your chosen user name and the password <i>password</i> in the login form. The app should load your C:\ drive directory, which you should be able to browse. 
+
+NOTE: uploading, removal and renaming functions might not work in some system directories, such as C:\.
 
 <h2>Functionality</h2>
 
